@@ -15,7 +15,9 @@ function App() {
       .getCurrentUser()
       .then((userData) => {
         if (userData) {
-          dispatch(login({ userData }));
+          // Convert Appwrite user object to plain object to avoid non-serializable errors
+          const plainUserData = JSON.parse(JSON.stringify(userData));
+          dispatch(login({ userData: plainUserData }));
         } else {
           dispatch(logout());
         }

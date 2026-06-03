@@ -18,7 +18,11 @@ function Login() {
       const session = await authService.login(data);
       if (session) {
         const userData = await authService.getCurrentUser();
-        if (userData) dispatch(authLogin(userData));
+        if (userData) {
+          // Convert Appwrite user object to plain object to avoid non-serializable errors
+          const plainUserData = JSON.parse(JSON.stringify(userData));
+          dispatch(authLogin(plainUserData));
+        }
         navigate("/");
       }
     } catch (error) {

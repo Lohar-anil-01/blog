@@ -18,7 +18,11 @@ function Signup() {
       const userData = await authService.createAccount(data);
       if (userData) {
         const userData = await authService.getCurrentUser();
-        if (userData) dispatch(login(userData));
+        if (userData) {
+          // Convert Appwrite user object to plain object to avoid non-serializable errors
+          const plainUserData = JSON.parse(JSON.stringify(userData));
+          dispatch(login(plainUserData));
+        }
         navigate("/");
       }
     } catch (error) {
